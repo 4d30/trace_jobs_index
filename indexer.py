@@ -4,8 +4,7 @@ import os
 
 import xapian
 
-import cafs
-from . import transform, model
+from . import cafs, transform
 
 
 def facet(doc, prefix, values):
