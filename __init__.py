@@ -1,1 +1,1 @@
-from .worker import synchronize
+from .indexer import synchronize
