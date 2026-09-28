@@ -16,7 +16,7 @@ def facet(doc, prefix, values):
         if not v:
             continue
 
-        term = norm(v)
+        term = transform.norm(v)
         # Longest place name is 85 chars
         if len(term) > 85:
             continue
