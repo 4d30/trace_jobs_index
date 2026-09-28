@@ -1,0 +1,3 @@
+[submodule "cafs"]
+	path = cafs
+	url = git@github.com:4d30/cafs.git
