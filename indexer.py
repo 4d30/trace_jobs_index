@@ -6,6 +6,7 @@ import xapian
 
 from . import cafs, transform
 
+from .format import TEXT_FIELDS, DATA_FIELDS, SLOT_FIELDS, SLOT_VALUES, PREFIXES
 
 def facet(doc, prefix, values):
     if isinstance(values, str):
