@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+from collections import ChainMap
 from itertools import repeat
 from datetime import datetime
 import xapian
@@ -11,6 +12,7 @@ from .transform import get_stemmer, get_termgen, get_queryparser, norm
 
 
 def make_query(data, matchall=True):
+    data = ChainMap(data['search'], data['view'])
     qp = get_queryparser()
     text_fields = TEXT_FIELDS.intersection(data.keys())
     Qs = []
@@ -78,7 +80,7 @@ def search(q_dict, matchall=True,  page_no=0, page_size=12):
 
 
 if __name__ == '__main__':
-    Q = {'title': ('data',),
-         'country': ('US',), }
-    results = search(Q, page_no=2)
+    Q = {'search': { },
+         'view': {'sortby': 'date_posted'}}
+    results = search(Q, page_no=0)
     print(results)
