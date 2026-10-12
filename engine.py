@@ -52,6 +52,12 @@ def make_query(data, matchall=True):
                                SLOT_VALUES[slot_field],
                                value)
             Qs.append(sfq)
+        elif slot_field == 'date_posted':
+            value = xapian.sortable_serialise(0.0)
+            sfq = xapian.Query(xapian.Query.OP_VALUE_GE,
+                               SLOT_VALUES[slot_field],
+                               value)
+            Qs.append(sfq)
         elif slot_field == 'salary_min':
             value = xapian.sortable_serialise(data[slot_field])
             max_salary = SLOT_VALUES['salary_max']

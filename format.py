@@ -5,7 +5,7 @@ DATA_FIELDS = set(('employment_type', 'job_location_type',
                    'language', 'det_language', 'country',
                    'region', 'city', 'salary_currency',
                    'url',))
-SLOT_FIELDS = set(('posted_after', 'date_posted', 'salary_min', 'salary_max',))
+SLOT_FIELDS = set(('date_posted', 'posted_after', 'posted_before', 'salary_min', 'salary_max',))
 VIEW_FIELDS = set(('sortby', 'offset',))
 PREFIXES = {
     'title': 'A',
