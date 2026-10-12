@@ -38,7 +38,13 @@ def make_query(data, matchall=True):
             Qs.append(dfq)
     slot_fields = SLOT_FIELDS.intersection(data.keys())
     for slot_field in slot_fields:
-        if slot_field == 'posted_after':
+        if slot_field == 'date_posted':
+            value = b''
+            sfq = xapian.Query(xapian.Query.OP_VALUE_GE,
+                               SLOT_VALUES[slot_field],
+                               value)
+            Qs.append(sfq)
+        elif slot_field == 'posted_after':
             value = datetime.strptime(data[slot_field], "%Y-%m-%d").timestamp()
             value = xapian.sortable_serialise(value)
             sfq = xapian.Query(xapian.Query.OP_VALUE_GE,
@@ -49,12 +55,6 @@ def make_query(data, matchall=True):
             value = datetime.strptime(data[slot_field], "%Y-%m-%d").timestamp()
             value = xapian.sortable_serialise(value)
             sfq = xapian.Query(xapian.Query.OP_VALUE_LE,
-                               SLOT_VALUES[slot_field],
-                               value)
-            Qs.append(sfq)
-        elif slot_field == 'date_posted':
-            value = xapian.sortable_serialise(0.0)
-            sfq = xapian.Query(xapian.Query.OP_VALUE_GE,
                                SLOT_VALUES[slot_field],
                                value)
             Qs.append(sfq)
