@@ -65,13 +65,24 @@ def make_query(data, matchall=True):
     return xapian.Query(xapian.Query.OP_AND, tuple(Qs))
 
 
+def set_sort_order(inquiry, q_dict):
+    view = q_dict.get('view', {})
+    sortby = view.get('sortby', 'date_posted')
+    default_sort_slot = SLOT_VALUES[sortby]
+
+    if 'sortby' in view:
+        inquiry.set_sort_by_value_then_relevance(default_sort_slot, False)
+    else:
+        inquiry.set_sort_by_relevance_then_value(default_sort_slot, True)
+    return inquiry
+
+
 def search(q_dict, matchall=True,  page_no=0, page_size=12):
     query = make_query(q_dict, matchall)
     xdb = xapian.Database(os.getenv('XAPIAN_ROOT'), xapian.DB_OPEN)
     inquiry = xapian.Enquire(xdb)
     inquiry.set_query(query)
-    default_sort_slot = SLOT_VALUES['date_posted']
-    inquiry.set_sort_by_relevance_then_value(default_sort_slot, True)
+    inquiry = set_sort_order(inquiry, q_dict)
     offset = 0 + page_no*page_size
     mset = inquiry.get_mset(offset, page_size)
     hashes = tuple(m.document.get_data().decode('utf-8') for m in mset)
