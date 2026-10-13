@@ -10,6 +10,8 @@ from .format import TEXT_FIELDS, DATA_FIELDS, SLOT_FIELDS
 from .format import PREFIXES, SLOT_VALUES
 from .transform import get_stemmer, get_termgen, get_queryparser, norm
 
+import cafs
+
 
 def make_query(data, matchall=True):
     data = ChainMap(data['search'], data['view'])
@@ -38,13 +40,7 @@ def make_query(data, matchall=True):
             Qs.append(dfq)
     slot_fields = SLOT_FIELDS.intersection(data.keys())
     for slot_field in slot_fields:
-        if slot_field == 'date_posted':
-            value = b''
-            sfq = xapian.Query(xapian.Query.OP_VALUE_GE,
-                               SLOT_VALUES[slot_field],
-                               value)
-            Qs.append(sfq)
-        elif slot_field == 'posted_after':
+        if slot_field == 'posted_after':
             value = datetime.strptime(data[slot_field], "%Y-%m-%d").timestamp()
             value = xapian.sortable_serialise(value)
             sfq = xapian.Query(xapian.Query.OP_VALUE_GE,
@@ -77,7 +73,7 @@ def set_sort_order(inquiry, q_dict):
     default_sort_slot = SLOT_VALUES[sortby]
 
     if 'sortby' in view:
-        inquiry.set_sort_by_value_then_relevance(default_sort_slot, False)
+        inquiry.set_sort_by_value_then_relevance(default_sort_slot, True)
     else:
         inquiry.set_sort_by_relevance_then_value(default_sort_slot, True)
     return inquiry
