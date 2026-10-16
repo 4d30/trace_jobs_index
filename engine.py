@@ -10,8 +10,6 @@ from .format import TEXT_FIELDS, DATA_FIELDS, SLOT_FIELDS
 from .format import PREFIXES, SLOT_VALUES
 from .transform import get_stemmer, get_termgen, get_queryparser, norm
 
-import cafs
-
 
 def make_query(data, matchall=True):
     data = ChainMap(data['search'], data['view'])
